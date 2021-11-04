@@ -19,29 +19,29 @@ class MainActivity : BaseActivity() {
             changeFragment(ob)
         })
 
+        changeMyOtherSelect(AMRECHAT)
         chat_my_select.setOnClickListener { changeMyOtherSelect(AMRECHAT) }
         chat_other_select.setOnClickListener { changeMyOtherSelect(KANOCHAT) }
     }
 
-    fun changeMyOtherSelect(target: String?) {
-        when(target) {
-            AMRECHAT -> {
-                chat_my_select.setBackgroundColor(Color.parseColor("#fef01b"))
-                chat_other_select.setBackgroundColor(Color.parseColor("#eeeeee"))
-                ChatDataBase.getInstance(this)?.apply {
-                    chat_user_select_tag?.value = AMRECHAT
-                    onChatRead()
+    fun changeMyOtherSelect(target: String) {
+        ChatDataBase.getInstance(this)?.let {
+            when(target) {
+                AMRECHAT -> {
+                    chat_my_select.setBackgroundColor(Color.parseColor("#fef01b"))
+                    chat_other_select.setBackgroundColor(Color.parseColor("#eeeeee"))
+                    it.chat_user_select_tag?.value = AMRECHAT
+                    it.onChatRead()
                 }
-            }
-            KANOCHAT -> {
-                chat_other_select.setBackgroundColor(Color.parseColor("#fef01b"))
-                chat_my_select.setBackgroundColor(Color.parseColor("#eeeeee"))
-                ChatDataBase.getInstance(this)?.apply {
-                    chat_user_select_tag?.value = KANOCHAT
-                    onChatRead()
+                KANOCHAT -> {
+                    chat_other_select.setBackgroundColor(Color.parseColor("#fef01b"))
+                    chat_my_select.setBackgroundColor(Color.parseColor("#eeeeee"))
+                    it.chat_user_select_tag?.value = KANOCHAT
+                    it.onChatRead()
                 }
             }
         }
+
     }
 
     fun changeFragment(fragment_type: String?) {
@@ -50,14 +50,12 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    fun checkFragment(fragment_type:String?) {
+    fun checkFragment(fragment_type:String) {
         supportFragmentManager?.beginTransaction()?.let { ft ->
             fragment_type?.let { ty ->
-                when(ty) {
-                    CHAT -> {
-                        ChatFragment()?.apply { ft.replace(R.id.main_frag, this).commit() }
-                    }
-                    else -> {}
+                when (ty) {
+                    CHAT -> ChatFragment()?.apply { ft.replace(R.id.main_frag, this).commit() }
+                    else -> ChatFragment()?.apply { ft.replace(R.id.main_frag, this).commit() }
                 }
             }
         }
