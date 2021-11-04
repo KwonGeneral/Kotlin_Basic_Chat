@@ -1,15 +1,13 @@
 package com.example.kotlin_basic_chat
 
 import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.kotlin_basic_chat.Chat.ChatFragment
 import com.example.kotlin_basic_chat.Chat.model.ChatDataBase
-import com.example.kotlin_basic_chat.Chat.viewModel.ChatViewModel
 import com.example.kotlin_basic_chat.Chat.viewModel.FragmentChangeViewModel
+import com.example.kotlin_basic_chat.contain.Define.Companion.AMRECHAT
 import com.example.kotlin_basic_chat.contain.Define.Companion.CHAT
-import com.example.kotlin_basic_chat.contain.Define.Companion.MYCHAT
-import com.example.kotlin_basic_chat.contain.Define.Companion.OTHERCHAT
+import com.example.kotlin_basic_chat.contain.Define.Companion.KANOCHAT
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity() {
@@ -17,32 +15,29 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        FragmentChangeViewModel.getInstance().fragment_screen_tag.value = CHAT
         FragmentChangeViewModel.getInstance().fragment_screen_tag.observe( this, { ob ->
             changeFragment(ob)
         })
 
-//        ChatDataBase.getInstance(this)?.chatDao()?.chatReset()
-
-        chat_my_select.setOnClickListener { changeMyOtherSelect(MYCHAT) }
-        chat_other_select.setOnClickListener { changeMyOtherSelect(OTHERCHAT) }
+        chat_my_select.setOnClickListener { changeMyOtherSelect(AMRECHAT) }
+        chat_other_select.setOnClickListener { changeMyOtherSelect(KANOCHAT) }
     }
 
     fun changeMyOtherSelect(target: String?) {
         when(target) {
-            MYCHAT -> {
+            AMRECHAT -> {
                 chat_my_select.setBackgroundColor(Color.parseColor("#fef01b"))
                 chat_other_select.setBackgroundColor(Color.parseColor("#eeeeee"))
                 ChatDataBase.getInstance(this)?.apply {
-                    chat_user_select_tag?.value = MYCHAT
+                    chat_user_select_tag?.value = AMRECHAT
                     onChatRead()
                 }
             }
-            OTHERCHAT -> {
+            KANOCHAT -> {
                 chat_other_select.setBackgroundColor(Color.parseColor("#fef01b"))
                 chat_my_select.setBackgroundColor(Color.parseColor("#eeeeee"))
                 ChatDataBase.getInstance(this)?.apply {
-                    chat_user_select_tag?.value = OTHERCHAT
+                    chat_user_select_tag?.value = KANOCHAT
                     onChatRead()
                 }
             }

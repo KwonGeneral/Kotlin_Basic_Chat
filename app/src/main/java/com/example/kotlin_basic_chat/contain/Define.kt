@@ -4,7 +4,7 @@ class Define {
     companion object {
         const val EMPTY_STR:String = "EMPTY"
         const val CHAT:String = "CHAT_FRAGMENT"
-        const val MYCHAT:String = "아메리"
-        const val OTHERCHAT:String = "카노"
+        const val AMRECHAT:String = "amre"
+        const val KANOCHAT:String = "kano"
     }
 }

@@ -3,18 +3,17 @@ package com.example.kotlin_basic_chat.Chat.viewModel
 import androidx.lifecycle.MutableLiveData
 import com.example.kotlin_basic_chat.Chat.model.ChatData
 
-class ChatViewModel {
-
+class SearchViewModel {
     var search_result = MutableLiveData<List<ChatData>>()
 
     companion object {
-        var chatViewModel: ChatViewModel? = null
-        fun getInstance(): ChatViewModel {
-            chatViewModel?.let {
+        var searchViewModel: SearchViewModel? = null
+        fun getInstance(): SearchViewModel {
+            searchViewModel?.let {
                 return it
             }
-            chatViewModel = ChatViewModel()
-            return chatViewModel!!
+            searchViewModel = SearchViewModel()
+            return searchViewModel!!
         }
     }
 }
