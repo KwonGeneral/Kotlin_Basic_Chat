@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Chat.ChatFragment">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/chat_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="#ffffff"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/chat_send_message_edit"
+            style="@style/jua"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@null"
+            android:backgroundTint="@null"
+            android:ems="10"
+            android:gravity="center|start"
+            android:hint="내용을 입력하세요"
+            android:inputType="textMultiLine|textNoSuggestions"
+            android:minHeight="70dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="30dp"
+            android:textColor="#333333"
+            android:textColorHint="#999999" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/chat_submit_btn"
+            style="@style/jua"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:text="전송" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
