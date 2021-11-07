@@ -1,21 +1,33 @@
 package com.example.kotlin_basic_chat
 
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import com.example.kotlin_basic_chat.Chat.ChatFragment
-import com.example.kotlin_basic_chat.Chat.model.ChatData
 import com.example.kotlin_basic_chat.Chat.model.ChatDataBase
 import com.example.kotlin_basic_chat.Chat.viewModel.FragmentChangeViewModel
 import com.example.kotlin_basic_chat.contain.Define.Companion.AMRECHAT
 import com.example.kotlin_basic_chat.contain.Define.Companion.CHAT
 import com.example.kotlin_basic_chat.contain.Define.Companion.KANOCHAT
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import com.google.firebase.firestore.FirebaseFirestore
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.*
+import kotlin.collections.HashMap
+
+
 
 class MainActivity : BaseActivity() {
+    var firebaseDB = FirebaseFirestore.getInstance()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -27,6 +39,48 @@ class MainActivity : BaseActivity() {
         changeMyOtherSelect(AMRECHAT)
         chat_my_select.setOnClickListener { changeMyOtherSelect(AMRECHAT) }
         chat_other_select.setOnClickListener { changeMyOtherSelect(KANOCHAT) }
+
+
+        // Fcm 토큰 생성 및 Firebase DB 저장
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                return@OnCompleteListener
+            }
+            var fcm_list = mutableListOf<String>()
+            firebaseDB.collection("User")?.let { db ->
+                db.get().addOnCompleteListener { read ->
+                    if (read.isSuccessful) {
+                        for (document in read.result!!) {
+                            fcm_list.add(document.data["fcmToken"].toString())
+                        }
+
+                        task.result.toString()?.let { fcm ->
+                            if(fcm in fcm_list) {
+                                return@addOnCompleteListener
+                            }
+                            LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))?.let { time ->
+                                Build.MODEL?.let { model ->
+                                    val user: MutableMap<String, Any> = HashMap()
+                                    user["fcmToken"] = fcm
+                                    user["phoneModel"] = model
+                                    user["createdAt"] = time
+
+                                    db.add(user)?.apply {
+                                        addOnSuccessListener { documentReference ->
+                                            Log.d("TEST", "DocumentSnapshot added with ID: " + documentReference.id)
+                                        }
+                                        addOnFailureListener { e -> Log.w("TEST", "Error adding document", e) }
+                                    }
+                                    Toast.makeText(baseContext, "FCM 토큰을 Firebase DB에 저장했습니다", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                        }
+                    } else {
+                        Log.w("TEST", "Error getting documents.", read.exception)
+                    }
+                }
+            }
+        })
     }
 
     fun moveChatFragment() {
