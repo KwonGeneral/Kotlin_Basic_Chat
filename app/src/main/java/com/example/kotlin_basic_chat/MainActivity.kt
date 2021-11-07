@@ -66,17 +66,16 @@ class MainActivity : BaseActivity() {
                                     user["createdAt"] = time
 
                                     db.add(user)?.apply {
-                                        addOnSuccessListener { documentReference ->
-                                            Log.d("TEST", "DocumentSnapshot added with ID: " + documentReference.id)
+                                        addOnSuccessListener {
+                                            Toast.makeText(baseContext, "FCM 토큰을 Firebase DB에 저장했습니다", Toast.LENGTH_SHORT).show()
                                         }
-                                        addOnFailureListener { e -> Log.w("TEST", "Error adding document", e) }
+                                        addOnFailureListener {
+                                            Toast.makeText(baseContext, "FCM 토큰을 Firebase DB 저장에 실패했습니다", Toast.LENGTH_SHORT).show()
+                                        }
                                     }
-                                    Toast.makeText(baseContext, "FCM 토큰을 Firebase DB에 저장했습니다", Toast.LENGTH_SHORT).show()
                                 }
                             }
                         }
-                    } else {
-                        Log.w("TEST", "Error getting documents.", read.exception)
                     }
                 }
             }
