@@ -1,16 +1,22 @@
 package com.example.kotlin_basic_chat
 
+import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import com.example.kotlin_basic_chat.Chat.ChatFragment
 import com.example.kotlin_basic_chat.Chat.model.ChatDataBase
 import com.example.kotlin_basic_chat.Chat.viewModel.FragmentChangeViewModel
 import com.example.kotlin_basic_chat.contain.Define.Companion.AMRECHAT
+import com.example.kotlin_basic_chat.contain.Define.Companion.BACKGROUND
 import com.example.kotlin_basic_chat.contain.Define.Companion.CHAT
+import com.example.kotlin_basic_chat.contain.Define.Companion.FOREGROUND
 import com.example.kotlin_basic_chat.contain.Define.Companion.KANOCHAT
+import com.example.kotlin_basic_chat.contain.Define.Companion.WEB
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.android.synthetic.main.activity_main.*
@@ -28,18 +34,38 @@ import kotlin.collections.HashMap
 class MainActivity : BaseActivity() {
     var firebaseDB = FirebaseFirestore.getInstance()
 
+    override fun onResume() {
+        Log.d("TEST", "onResume, onResume, onResume")
+        super.onResume()
+    }
+
+    override fun onPause() {
+        Log.d("TEST", "onPause, onPause, onPause")
+        super.onPause()
+    }
+
+    override fun onDestroy() {
+        Log.d("TEST", "onDestroy, onDestroy, onDestroy")
+        super.onDestroy()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        FragmentChangeViewModel.getInstance()?.let { fc ->
+            fc.fragment_screen_tag.observe( this, { ob ->
+                changeFragment(ob)
+            })
+        }
 
-        FragmentChangeViewModel.getInstance().fragment_screen_tag.observe( this, { ob ->
-            changeFragment(ob)
-        })
 
         changeMyOtherSelect(AMRECHAT)
-        chat_my_select.setOnClickListener { changeMyOtherSelect(AMRECHAT) }
+        chat_my_select.setOnClickListener {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("web://www.naver.com")))
+//            changeMyOtherSelect(AMRECHAT)
+        }
         chat_other_select.setOnClickListener { changeMyOtherSelect(KANOCHAT) }
-
+//        ChatDataBase.getInstance(this)?.chatDao()?.chatReset()
 
         // Fcm 토큰 생성 및 Firebase DB 저장
         FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
@@ -113,13 +139,19 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    fun changeFragment(fragment_type: String?) {
-        fragment_type?.let { ty ->
-            checkFragment(ty)
+    fun changeFragment(fragment_type: String?, link: String = "") {
+        if(link != "") {
+            fragment_type?.let { ty ->
+                checkFragment(ty, link)
+            }
+        }else {
+            fragment_type?.let { ty ->
+                checkFragment(ty)
+            }
         }
     }
 
-    fun checkFragment(fragment_type:String) {
+    fun checkFragment(fragment_type:String, link:String = "") {
         supportFragmentManager?.beginTransaction()?.let { ft ->
             fragment_type?.let { ty ->
                 when (ty) {

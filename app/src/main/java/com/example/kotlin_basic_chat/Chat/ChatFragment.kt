@@ -12,17 +12,18 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.kotlin_basic_chat.Chat.adapter.ChatAdapter
 import com.example.kotlin_basic_chat.Chat.model.ChatData
 import com.example.kotlin_basic_chat.Chat.model.ChatDataBase
+import com.example.kotlin_basic_chat.Chat.viewModel.FragmentChangeViewModel
 import com.example.kotlin_basic_chat.R
+import com.example.kotlin_basic_chat.contain.Define.Companion.WEB
 import kotlinx.android.synthetic.main.fragment_chat.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.Dispatchers.Main
 
 
 class ChatFragment : Fragment() {
     companion object {
         @JvmStatic
-        fun newInstance(): ChatFragment {
+        fun newInstance(list: List<ChatData>): ChatFragment {
             return ChatFragment()
         }
     }
@@ -37,6 +38,12 @@ class ChatFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.d("TEST", "onViewCreated onViewCreated onViewCreated")
+
+        link_btn.setOnClickListener {
+
+        }
+
         ChatDataBase.getInstance(requireContext())?.let { model->
             model.chatReadData?.observe(viewLifecycleOwner, { list ->
                 with(chat_recycler) {

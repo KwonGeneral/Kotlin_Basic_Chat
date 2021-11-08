@@ -8,14 +8,16 @@
         <entry key="..\:/Development/GitHubProject/Kotlin_Basic_Chat/app/src/main/res/layout/fragment_chat_my_item.xml" value="0.22" />
         <entry key="..\:/Development/GitHubProject/Kotlin_Basic_Chat/app/src/main/res/layout/fragment_chat_other_item.xml" value="0.17844202898550723" />
         <entry key="..\:/Users/ktw/Desktop/GitHubBackupProject/Kotlin_Basic_Chat/app/src/main/res/layout/activity_main.xml" value="0.4" />
+        <entry key="..\:/Users/ktw/Desktop/GitHubBackupProject/Kotlin_Basic_Chat/app/src/main/res/layout/activity_web.xml" value="0.203125" />
         <entry key="..\:/Users/ktw/Desktop/GitHubBackupProject/Kotlin_Basic_Chat/app/src/main/res/layout/fragment_chat.xml" value="0.19947916666666668" />
         <entry key="..\:/Users/ktw/Desktop/GitHubBackupProject/Kotlin_Basic_Chat/app/src/main/res/layout/fragment_chat_item.xml" value="0.536" />
         <entry key="..\:/Users/ktw/Desktop/GitHubBackupProject/Kotlin_Basic_Chat/app/src/main/res/layout/fragment_chat_my_item.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/ktw/Desktop/GitHubBackupProject/Kotlin_Basic_Chat/app/src/main/res/layout/fragment_chat_other_item.xml" value="0.36614583333333334" />
+        <entry key="..\:/Users/ktw/Desktop/GitHubBackupProject/Kotlin_Basic_Chat/app/src/main/res/layout/fragment_web_view.xml" value="0.19791666666666666" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
