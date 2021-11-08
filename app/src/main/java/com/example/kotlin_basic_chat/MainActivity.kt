@@ -36,6 +36,7 @@ class MainActivity : BaseActivity() {
 
     override fun onResume() {
         Log.d("TEST", "onResume, onResume, onResume")
+
         super.onResume()
     }
 
@@ -58,10 +59,13 @@ class MainActivity : BaseActivity() {
             })
         }
 
+        intent.getStringExtra("link")?.let {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(it)))
+        }
 
         changeMyOtherSelect(AMRECHAT)
         chat_my_select.setOnClickListener {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("web://www.naver.com")))
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://www.naver.com")))
 //            changeMyOtherSelect(AMRECHAT)
         }
         chat_other_select.setOnClickListener { changeMyOtherSelect(KANOCHAT) }
