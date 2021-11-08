@@ -6,5 +6,7 @@ class Define {
         const val CHAT:String = "CHAT_FRAGMENT"
         const val AMRECHAT:String = "amre"
         const val KANOCHAT:String = "kano"
+        const val CHANNEL:String = "Chat_Channel"
+        const val OCHANNEL:String = "O_Chat_Channel"
     }
 }

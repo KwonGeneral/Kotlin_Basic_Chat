@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "521162901987",
+    "project_id": "reactandroid-7674a",
+    "storage_bucket": "reactandroid-7674a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:521162901987:android:227eef84c7a119861db8d6",
+        "android_client_info": {
+          "package_name": "com.example.kotlin_basic_chat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "521162901987-2f1v8l0rgeu016led8oo0ei9kcupu6th.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVYzxFuI33KAClnCRQbQbndypLLzjTVeE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "521162901987-2f1v8l0rgeu016led8oo0ei9kcupu6th.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
