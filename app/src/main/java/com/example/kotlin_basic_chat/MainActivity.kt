@@ -20,60 +20,33 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        FragmentChangeViewModel.getInstance().fragment_screen_tag.observe( this, { ob ->
-            changeFragment(ob)
-        })
-
-        changeMyOtherSelect(AMRECHAT)
         chat_my_select.setOnClickListener { changeMyOtherSelect(AMRECHAT) }
         chat_other_select.setOnClickListener { changeMyOtherSelect(KANOCHAT) }
-    }
 
-    fun moveChatFragment() {
-        supportFragmentManager?.beginTransaction()?.let { ft ->
-            CoroutineScope(IO).launch {
-                val chat = ChatDataBase.getInstance(this@MainActivity)?.coroutineChatRead()
-                chat?.let { ChatFragment.newInstance(it)?.apply { ft.replace(R.id.main_frag, this).commit() } }
-            }
-        }
-    }
-
-    fun changeMyOtherSelect(target: String) {
-        ChatDataBase.getInstance(this)?.let {
-            when(target) {
+        //화면 갱신 시 호출
+        ChatDataBase.getInstance(this)?.chat_user_select_tag?.observe(this,{
+            chat_other_select.setBackgroundColor(Color.parseColor("#eeeeee"))
+            var colorString:String = "#fef01b"
+            when(it) {
                 AMRECHAT -> {
-                    chat_my_select.setBackgroundColor(Color.parseColor("#fef01b"))
-                    chat_other_select.setBackgroundColor(Color.parseColor("#eeeeee"))
-                    it.chat_user_select_tag?.value = AMRECHAT
-//                    it.onChatRead()
-                    moveChatFragment()
+                    colorString =   "#fef01b"
                 }
                 KANOCHAT -> {
-                    chat_other_select.setBackgroundColor(Color.parseColor("#fef01b"))
-                    chat_my_select.setBackgroundColor(Color.parseColor("#eeeeee"))
-                    it.chat_user_select_tag?.value = KANOCHAT
-//                    it.onChatRead()
-                    moveChatFragment()
+                    colorString =   "#fef01b"
                 }
                 else -> {}
             }
-        }
-    }
-
-    fun changeFragment(fragment_type: String?) {
-        fragment_type?.let { ty ->
-            checkFragment(ty)
-        }
-    }
-
-    fun checkFragment(fragment_type:String) {
-        supportFragmentManager?.beginTransaction()?.let { ft ->
-            fragment_type?.let { ty ->
-                when (ty) {
-                    CHAT -> ChatFragment()?.apply { ft.replace(R.id.main_frag, this).commit() }
-                    else -> ChatFragment()?.apply { ft.replace(R.id.main_frag, this).commit() }
+            chat_my_select.setBackgroundColor(Color.parseColor(colorString))
+            supportFragmentManager?.beginTransaction()?.let { ft ->
+                ChatFragment.newInstance()?.apply {
+                    ft.replace(R.id.main_frag, this).commit()
                 }
             }
-        }
+        })
+        changeMyOtherSelect(AMRECHAT)
+    }
+
+    fun changeMyOtherSelect(target: String) {
+        ChatDataBase.getInstance(this)?.chat_user_select_tag?.value = target
     }
 }

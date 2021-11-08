@@ -15,18 +15,15 @@ import com.example.kotlin_basic_chat.Chat.model.ChatDataBase
 import com.example.kotlin_basic_chat.R
 import kotlinx.android.synthetic.main.fragment_chat.*
 import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
 
 
 class ChatFragment : Fragment() {
     companion object {
         @JvmStatic
-        fun newInstance(chat: List<ChatData>?): ChatFragment {
-            return ChatFragment().apply {
-                chat?.let {
-                    arguments = Bundle().apply { putStringArrayList("chat", it as ArrayList<String>) }
-                }
-            }
+        fun newInstance(): ChatFragment {
+            return ChatFragment()
         }
     }
 
@@ -40,53 +37,33 @@ class ChatFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-//        ChatDataBase.getInstance(requireContext())?.chatReadData?.observe(viewLifecycleOwner, { list ->
-//            with(chat_recycler) {
-//                layoutManager = LinearLayoutManager(context)
-//                adapter = ChatAdapter(requireContext(), list)
-//                scrollToPosition(list.size - 1)
-//            }
-//        })
-
-        arguments?.run {
-            getStringArrayList("chat")
-        }?.let { chat ->
-            with(chat_recycler) {
-                layoutManager = LinearLayoutManager(context)
-                adapter = ChatAdapter(requireContext(), chat as List<ChatData>)
-                scrollToPosition(chat.size - 1)
+        ChatDataBase.getInstance(requireContext())?.let { model->
+            model.chatReadData?.observe(viewLifecycleOwner, { list ->
+                with(chat_recycler) {
+                    layoutManager = LinearLayoutManager(context)
+                    adapter = ChatAdapter(requireContext(), list)
+                    scrollToPosition(list.size - 1)
+                }
+            })
+            CoroutineScope(IO).launch {
+                model.onChatRead()
             }
-        }
 
-        chat_submit_btn.setOnClickListener {
-            chat_send_message_edit?.let {
-                when(it.text.isNullOrBlank()) {
-                    false -> {
-                        ChatDataBase.getInstance(requireContext())?.onChatCreate(ChatData(
-                            id = null,
-                            nickname = ChatDataBase.getInstance(requireContext())?.chat_user_select_tag?.value,
-                            message = it.text.toString()
-                        ))
-                        CoroutineScope(Main).launch {
-                            ChatDataBase.getInstance(requireContext())?.coroutineChatRead()?.let { chat ->
-                                with(chat_recycler) {
-                                    layoutManager = LinearLayoutManager(context)
-                                    adapter = ChatAdapter(requireContext(), chat)
-                                    scrollToPosition(chat.size - 1)
-                                }
-                            }
+            chat_submit_btn.setOnClickListener {
+                chat_send_message_edit?.let {
+                    when(it.text.isNullOrBlank()) {
+                        false -> {
+                            model.onChatCreate(it.text.toString())
+                            val mInputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                            mInputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+                            it.setText("")
+                            it.clearFocus()
                         }
-
-                        val mInputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                        mInputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
-                        it.setText("")
-                        it.clearFocus()
+                        true -> return@setOnClickListener
                     }
-                    true -> return@setOnClickListener
                 }
             }
-
         }
+
     }
 }

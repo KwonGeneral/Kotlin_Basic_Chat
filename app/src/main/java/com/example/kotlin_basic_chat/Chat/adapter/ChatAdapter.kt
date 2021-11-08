@@ -54,19 +54,15 @@ class ChatAdapter constructor(var context: Context, var items:List<ChatData>): R
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val vh: VH = holder as VH
-        items[position]?.let { item ->
-            with(vh.itemView) {
-                chat_nickname.text = item.nickname
-                chat_text.text = item.message
+            items[position]?.let { item ->
+                with(holder.itemView) {
+                    chat_nickname.text = item.nickname
+                    chat_text.text = item.message
+                }
             }
-        }
     }
-
     override fun getItemCount(): Int {
         return items.size
     }
-
-    class VH constructor(itemView: View) : RecyclerView.ViewHolder(itemView){
-    }
+    class VH constructor(itemView: View) : RecyclerView.ViewHolder(itemView)
 }
