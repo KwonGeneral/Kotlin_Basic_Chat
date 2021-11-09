@@ -1,12 +1,16 @@
 package com.example.kotlin_basic_chat
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.kotlin_basic_chat.Chat.ChatFragment
 import com.example.kotlin_basic_chat.Chat.model.ChatDataBase
@@ -50,9 +54,19 @@ class MainActivity : BaseActivity() {
         super.onDestroy()
     }
 
+    private fun requestPermission() {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                arrayOf(Manifest.permission.RECORD_AUDIO), 0)
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        requestPermission()
+
         FragmentChangeViewModel.getInstance()?.let { fc ->
             fc.fragment_screen_tag.observe( this, { ob ->
                 changeFragment(ob)
@@ -65,8 +79,8 @@ class MainActivity : BaseActivity() {
 
         changeMyOtherSelect(AMRECHAT)
         chat_my_select.setOnClickListener {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://www.naver.com")))
-//            changeMyOtherSelect(AMRECHAT)
+//            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://www.naver.com")))
+            changeMyOtherSelect(AMRECHAT)
         }
         chat_other_select.setOnClickListener { changeMyOtherSelect(KANOCHAT) }
 //        ChatDataBase.getInstance(this)?.chatDao()?.chatReset()
